@@ -1,12 +1,11 @@
 from django.db import models
-from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 class Product(models.Model):
     name = models.CharField(max_length=100)
-    seller = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='products')
+    store = models.ForeignKey(
+        "Store", on_delete=models.CASCADE, related_name='products')
     price = models.DecimalField(decimal_places=2, max_digits=7, validators=[
                                 MinValueValidator(0.00), MaxValueValidator(10000.00)])
     description = models.TextField()
