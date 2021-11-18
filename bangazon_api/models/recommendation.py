@@ -5,5 +5,5 @@ from django.db import models
 class Recommendation(models.Model):
     recommender = models.ForeignKey(User, on_delete=models.CASCADE)
     customer = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="recommended")
+        User, on_delete=models.CASCADE, related_name="recommendations")
     product = models.ForeignKey("Product", on_delete=models.CASCADE)

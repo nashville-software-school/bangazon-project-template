@@ -1,9 +1,11 @@
+from django.contrib.auth.models import User
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
 from bangazon_api.models import Product, Store, Category, Order
+from bangazon_api.models.recommendation import Recommendation
 from bangazon_api.serializers import ProductSerializer
 
 
@@ -89,3 +91,29 @@ class ProductView(ViewSet):
             return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
         except Order.DoesNotExist as ex:
             return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
+
+    @action(methods=['post', 'delete'], detail=True)
+    def recommend(self, request, pk):
+        try:
+            product = Product.objects.get(pk=pk)
+            customer = User.objects.get(username=request.data['username'])
+        except Product.DoesNotExist as ex:
+            return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
+        except User.DoesNotExist as ex:
+            return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
+
+        if request.method == "POST":
+            recommendation = Recommendation.objects.create(
+                product=product,
+                recommender=request.auth.user,
+                customer=customer
+            )
+
+            return Response(None, status=status.HTTP_201_CREATED)
+
+        if request.method == 'DELETE':
+            rec_id = request.query_params.get('rec_id', None)
+            recommendation = Recommendation.objects.get(pk=rec_id)
+            recommendation.delete()
+
+            return Response(None, status=status.HTTP_204_NO_CONTENT)
