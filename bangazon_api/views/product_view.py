@@ -11,7 +11,7 @@ from bangazon_api.serializers import ProductSerializer
 
 class ProductView(ViewSet):
     def create(self, request):
-        store = Store.objects.get(user=request.auth.user)
+        store = Store.objects.get(seller=request.auth.user)
         category = Category.objects.get(pk=request.data['categoryId'])
         try:
             product = Product.objects.create(
@@ -24,7 +24,7 @@ class ProductView(ViewSet):
                 category=category
             )
             serializer = ProductSerializer(product)
-            return Response(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         except ValidationError as ex:
             return Response({'message': ex.args[0]}, status=status.HTTP_400_BAD_REQUEST)
 

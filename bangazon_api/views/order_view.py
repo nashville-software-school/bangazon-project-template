@@ -14,9 +14,9 @@ class OrderView(ViewSet):
         serializer = OrderSerializer(orders, many=True)
         return Response(serializer.data)
 
-    def delete(self, request, pk):
+    def destroy(self, request, pk):
         try:
-            order = Order.objects.get(pk=pk)
+            order = Order.objects.get(pk=pk, user=request.auth.user)
             order.delete()
             return Response(None, status=status.HTTP_204_NO_CONTENT)
         except Order.DoesNotExist as ex:
