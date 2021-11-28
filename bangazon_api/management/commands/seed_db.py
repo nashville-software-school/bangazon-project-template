@@ -26,6 +26,7 @@ class Command(BaseCommand):
             self.create_users()
 
     def create_users(self, user_count=10):
+        """Create random users"""
         for _ in range(user_count):
             first_name = self.faker.first_name()
             last_name = self.faker.last_name()
@@ -52,6 +53,7 @@ class Command(BaseCommand):
                 self.create_products(store, user_count)
 
     def create_store(self, user):
+        """Create random stores in the database"""
         return Store.objects.create(
             seller=user,
             name=self.faker.company(),
@@ -60,6 +62,7 @@ class Command(BaseCommand):
         )
 
     def create_products(self, store, count):
+        """Create Random Products in the database"""
         for _ in range(count):
             Product.objects.create(
                 name=self.faker.ecommerce_name(),

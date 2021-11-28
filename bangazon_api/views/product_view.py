@@ -208,7 +208,7 @@ class ProductView(ViewSet):
             404: openapi.Response(
                 description="Either the Product or User was not found",
                 schema=MessageSerializer()
-            ),
+            )
         }
     )
     @action(methods=['post', 'delete'], detail=True)
