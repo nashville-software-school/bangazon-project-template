@@ -8,8 +8,7 @@ from bangazon_api.serializers import PaymentTypeSerializer
 
 class PaymentTypeView(ViewSet):
     def list(self, request):
-        # TODO: add bug for getting all payment types
-        payment_types = PaymentType.objects.filter(user=request.auth.user)
+        payment_types = PaymentType.objects.all()
         serializer = PaymentTypeSerializer(payment_types, many=True)
         return Response(serializer.data)
 

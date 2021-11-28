@@ -31,8 +31,8 @@ class Command(BaseCommand):
             last_name = self.faker.last_name()
             username = f'{first_name}_{last_name}@example.com'
             user = User.objects.create_user(
-                first_name=self.faker.first_name(),
-                last_name=self.faker.last_name(),
+                first_name=first_name,
+                last_name=last_name,
                 password="PassWord1",
                 username=username,
             )

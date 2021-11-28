@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
-from bangazon_api.models import Product, Store, Category, Order
+from bangazon_api.models import Product, Store, Category, Order, Rating
 from bangazon_api.models.recommendation import Recommendation
 from bangazon_api.serializers import ProductSerializer
 
@@ -117,3 +117,18 @@ class ProductView(ViewSet):
             recommendation.delete()
 
             return Response(None, status=status.HTTP_204_NO_CONTENT)
+
+    @action(methods=['post'], detail=True, url_path='rate-product')
+    def rate_product(self, request, pk):
+        product = Product.objects.get(pk=pk)
+
+        try:
+            rating = Rating.objects.get(user=request.auth.user, product=product)
+            rating.score = request.data['score']
+            rating.save()
+        except Rating.DoesNotExist:
+            rating = Rating.objects.create(
+                user=request.auth.user,
+                product=product,
+                score = request.data['score']
+            )
