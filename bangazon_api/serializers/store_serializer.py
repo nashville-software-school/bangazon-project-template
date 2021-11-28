@@ -1,6 +1,8 @@
 from rest_framework import serializers
-from bangazon_api.models import Store
 from django.contrib.auth.models import User
+from bangazon_api.models import Store
+
+
 class StoreUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -8,11 +10,10 @@ class StoreUserSerializer(serializers.ModelSerializer):
 
 
 class StoreSerializer(serializers.ModelSerializer):
-    user = StoreUserSerializer()
-
+    seller = StoreUserSerializer()
     class Meta:
         model = Store
-        fields = ('id', 'name', 'description', 'user')
+        fields = ('id', 'name', 'description', 'seller')
 
 
 class AddStoreSerializer(serializers.Serializer):

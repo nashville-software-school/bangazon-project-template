@@ -66,7 +66,7 @@ class ProductView(ViewSet):
         category = Category.objects.get(pk=request.data['categoryId'])
 
         try:
-            product = Product.objects.get(pk=pk, store__user=request.auth.user)
+            product = Product.objects.get(pk=pk, store__seller=request.auth.user)
             product.name = request.data['name']
             product.price = request.data['price']
             product.description = request.data['description']
@@ -151,7 +151,7 @@ class ProductView(ViewSet):
         """Add a product to the current users open order"""
         try:
             product = Product.objects.get(pk=pk)
-            order = Order.objects.get_or_create(
+            order, _ = Order.objects.get_or_create(
                 user=request.auth.user, completed_on=None, payment_type=None)
             order.products.add(product)
             return Response({'message': 'product added'}, status=status.HTTP_201_CREATED)
@@ -258,12 +258,12 @@ class ProductView(ViewSet):
 
         try:
             rating = Rating.objects.get(
-                user=request.auth.user, product=product)
+                customer=request.auth.user, product=product)
             rating.score = request.data['score']
             rating.save()
         except Rating.DoesNotExist:
             rating = Rating.objects.create(
-                user=request.auth.user,
+                customer=request.auth.user,
                 product=product,
                 score=request.data['score']
             )

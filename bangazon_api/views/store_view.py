@@ -27,7 +27,7 @@ class StoreView(ViewSet):
         """Create a store for the current user"""
         try:
             store = Store.objects.create(
-                user=request.auth.user,
+                seller=request.auth.user,
                 name=request.data['name'],
                 description=request.data['description']
             )
@@ -115,6 +115,7 @@ class StoreView(ViewSet):
     )
     @action(methods=['post', 'delete'], detail=True)
     def favorite_store(self, request, pk):
+        """Favorite or unfavorite a store"""
         try:
             store = Store.objects.get(pk=pk)
         except Store.DoesNotExist as ex:
@@ -128,7 +129,7 @@ class StoreView(ViewSet):
 
         if request.method == "DELETE":
             favorite = Favorite.objects.get(
-                user=request.auth.user, store=store)
+                customer=request.auth.user, store=store)
             favorite.delete()
 
         return Response(None, status=status.HTTP_204_NO_CONTENT)

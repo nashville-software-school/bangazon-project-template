@@ -19,4 +19,4 @@ class AddRemoveRecommendationSerializer(serializers.Serializer):
     username = serializers.CharField()
 
 class AddProductRatingSerializer(serializers.Serializer):
-    rating = serializers.IntegerField()
+    score = serializers.IntegerField()
