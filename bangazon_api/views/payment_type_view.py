@@ -2,17 +2,39 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.exceptions import ValidationError
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 from bangazon_api.models import PaymentType
-from bangazon_api.serializers import PaymentTypeSerializer
+from bangazon_api.serializers import (
+    PaymentTypeSerializer, MessageSerializer, CreatePaymentType)
 
 
 class PaymentTypeView(ViewSet):
+    @swagger_auto_schema(responses={
+        200: openapi.Response(
+            description="The list of payment types for the current user",
+            schema=PaymentTypeSerializer(many=True)
+        )
+    })
     def list(self, request):
+        """Get a list of payment types for the current user"""
         payment_types = PaymentType.objects.all()
         serializer = PaymentTypeSerializer(payment_types, many=True)
         return Response(serializer.data)
 
+    @swagger_auto_schema(request_body=CreatePaymentType,
+                         responses={
+                             201: openapi.Response(
+                                 description="Returns the created payment type",
+                                 schema=PaymentTypeSerializer()
+                             ),
+                             400: openapi.Response(
+                                 description="Validation Error",
+                                 schema=MessageSerializer()
+                             )
+                         })
     def create(self, request):
+        """Create a payment type for the current user"""
         try:
             payment_type = PaymentType.objects.create(
                 customer=request.auth.user,

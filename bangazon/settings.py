@@ -28,9 +28,6 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
-# Application definition
-
-# UPDATE THIS
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -41,11 +38,11 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
+    'drf_yasg',
     'bangazon_api',
     'bangazon_reports',
 ]
 
-# THIS IS NEW
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
@@ -55,13 +52,25 @@ REST_FRAMEWORK = {
     ],
 }
 
-# THIS IS NEW
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Token': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header',
+            'description': """Grab a token from the authtoken table.
+            Use this format in the input field: **Token &lt;token>**"""
+        }
+    },
+    'DEFAULT_MODEL_RENDERING': 'example',
+    'USE_SESSION_AUTH': False
+}
+
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:3000',
     'http://127.0.0.1:3000'
 )
 
-# UPDATE THIS
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

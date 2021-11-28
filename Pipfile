@@ -13,6 +13,7 @@ pylint-django = "*"
 pillow = "*"
 faker = "*"
 faker-commerce = "*"
+drf-yasg = "*"
 
 [dev-packages]
 

@@ -4,4 +4,7 @@ class PaymentTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = PaymentType
         fields = '__all__'
-        depth = 1
+
+class CreatePaymentType(serializers.Serializer):
+    acctNumber = serializers.CharField()
+    merchant = serializers.CharField()
