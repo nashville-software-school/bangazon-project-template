@@ -68,7 +68,7 @@ class Command(BaseCommand):
                 name=self.faker.ecommerce_name(),
                 store=store,
                 price=random.randint(50, 1000),
-                description=self.faker.paragraph,
+                description=self.faker.paragraph(),
                 quantity=random.randint(2, 20),
                 location=random.choice(STATE_NAMES),
                 image_path="",

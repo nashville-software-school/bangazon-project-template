@@ -9,3 +9,11 @@ class Order(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     completed_on = models.DateTimeField(null=True, blank=True)
     products = models.ManyToManyField("Product", through="OrderProduct")
+
+    @property
+    def total(self):
+        return sum([p.price for p in self.products.all()], 0)
+
+    def __str__(self):
+        is_open = 'Completed' if self.completed_on else 'Open'
+        return f'{is_open} order for {self.user.get_full_name()}'

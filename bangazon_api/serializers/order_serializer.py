@@ -6,7 +6,7 @@ from bangazon_api.models.payment_type import PaymentType
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
-        fields = ('id', 'products', 'created_on', 'completed_on')
+        fields = ('id', 'products', 'created_on', 'completed_on', 'total')
         depth = 1
 
 class UpdateOrderSerializer(serializers.ModelSerializer):

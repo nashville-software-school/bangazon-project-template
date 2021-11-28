@@ -3,7 +3,7 @@ from bangazon_api.models import Product
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = '__all__'
+        fields = ('id', 'name', 'price', 'description', 'average_rating', 'quantity', 'location', 'image_path', 'category', 'store')
         depth = 1
 
 class CreateProductSerializer(serializers.Serializer):
