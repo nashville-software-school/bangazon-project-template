@@ -63,7 +63,8 @@ SWAGGER_SETTINGS = {
         }
     },
     'DEFAULT_MODEL_RENDERING': 'example',
-    'USE_SESSION_AUTH': False
+    'USE_SESSION_AUTH': False,
+    'DEFAULT_MODEL_DEPTH':-1
 }
 
 CORS_ORIGIN_WHITELIST = (

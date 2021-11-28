@@ -24,7 +24,7 @@ class Product(models.Model):
         """
         # TODO: Fix Divide by zero error
         # The below code returns a divide by zero error uncomment and fix
-        
+
         # total_rating = 0
         # for rating in self.ratings.all():
         #     total_rating += rating.rating
