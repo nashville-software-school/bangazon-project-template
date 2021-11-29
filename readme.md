@@ -33,4 +33,4 @@ To make it easier for onboarding new developers, there is a documentation site m
 8. Try to get a list of categories in the browser
 9. If this doesn't work, reach out to your senior
 
-Once you're logged into the documentation, try out a few other requests so you can see what each endpoint does. There is information in the docs about what status and data will be returned with each response
+Once you're logged into the swagger docs, try out a few other requests so you can see what each endpoint does. There is information in the docs about what status and data will be returned with each response. If you want to switch users, look in the `auth_token` table to grab a different token.
