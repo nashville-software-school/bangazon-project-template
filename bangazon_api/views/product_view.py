@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.db.models import Count
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import status
@@ -6,6 +7,7 @@ from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
+from bangazon_api.helpers import STATE_NAMES
 from bangazon_api.models import Product, Store, Category, Order, Rating, Recommendation
 from bangazon_api.serializers import (
     ProductSerializer, CreateProductSerializer, MessageSerializer,
@@ -66,7 +68,8 @@ class ProductView(ViewSet):
         category = Category.objects.get(pk=request.data['categoryId'])
 
         try:
-            product = Product.objects.get(pk=pk, store__seller=request.auth.user)
+            product = Product.objects.get(
+                pk=pk, store__seller=request.auth.user)
             product.name = request.data['name']
             product.price = request.data['price']
             product.description = request.data['description']
@@ -105,10 +108,76 @@ class ProductView(ViewSet):
                 description="The list of products",
                 schema=ProductSerializer(many=True)
             )
-        })
+        },
+        manual_parameters=[
+            openapi.Parameter(
+                "number_sold",
+                openapi.IN_QUERY,
+                required=False,
+                type=openapi.TYPE_INTEGER,
+                description="Get products that have sold over this amount"
+            ),
+            openapi.Parameter(
+                "category",
+                openapi.IN_QUERY,
+                required=False,
+                type=openapi.TYPE_INTEGER,
+                description="Get products by category"
+            ),
+            openapi.Parameter(
+                "order_by",
+                openapi.IN_QUERY,
+                required=False,
+                type=openapi.TYPE_STRING,
+                enum=['name', 'price'],
+                description="Order products by name or price"
+            ),
+            openapi.Parameter(
+                "direction",
+                openapi.IN_QUERY,
+                required=False,
+                type=openapi.TYPE_STRING,
+                enum=['asc', 'desc'],
+                description="Order by ascending or descending"
+            ),
+            openapi.Parameter(
+                "location",
+                openapi.IN_QUERY,
+                required=False,
+                type=openapi.TYPE_STRING,
+                enum=STATE_NAMES,
+                description="Get Products from based on state"
+            ),
+            openapi.Parameter(
+                "min_price",
+                openapi.IN_QUERY,
+                required=False,
+                type=openapi.TYPE_INTEGER,
+                description="Get Products over a certain price"
+            ),
+        ]
+    )
     def list(self, request):
         """Get a list of all products"""
         products = Product.objects.all()
+
+        number_sold = request.query_params.get('number_sold', None)
+        category = request.query_params.get('category', None)
+        order = request.query_params.get('order_by', None)
+        direction = request.query_params.get('direction', None)
+
+        if number_sold:
+            products = products.annotate(
+                order_count=Count('orders')
+            ).filter(order_count__lt=number_sold)
+
+        if order is not None:
+            order_filter = f'-{order}' if direction == 'desc' else order
+            products = products.order_by(order_filter)
+
+        if category is not None:
+            products = products.filter(category__id=category)
+
         serializer = ProductSerializer(products, many=True)
         return Response(serializer.data)
 
@@ -178,7 +247,6 @@ class ProductView(ViewSet):
             product = Product.objects.get(pk=pk)
             order = Order.objects.get(
                 user=request.auth.user, completed_on=None)
-            order.products.remove(product)
             return Response(None, status=status.HTTP_204_NO_CONTENT)
         except Product.DoesNotExist as ex:
             return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)

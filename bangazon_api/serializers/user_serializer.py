@@ -5,7 +5,8 @@ from django.contrib.auth.models import User
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('username', 'orders', 'favorites', 'store')
+        fields = ('username', 'first_name', 'last_name', 'orders',
+                  'favorites', 'store', 'recommended_by')
         depth = 1
 
 

@@ -100,36 +100,3 @@ class StoreView(ViewSet):
             return Response({'message': ex.args[0]}, status=status.HTTP_400_BAD_REQUEST)
         except Store.DoesNotExist as ex:
             return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
-
-    @swagger_auto_schema(
-        methods=['POST', 'DELETE'],
-        responses={
-            204: openapi.Response(
-                description="No content, action was successful",
-            ),
-            404: openapi.Response(
-                description="Store not found",
-                schema=MessageSerializer()
-            ),
-        }
-    )
-    @action(methods=['post', 'delete'], detail=True)
-    def favorite_store(self, request, pk):
-        """Favorite or unfavorite a store"""
-        try:
-            store = Store.objects.get(pk=pk)
-        except Store.DoesNotExist as ex:
-            return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
-
-        if request.method == "POST":
-            favorite = Favorite.objects.create(
-                customer=request.auth.user,
-                store=store
-            )
-
-        if request.method == "DELETE":
-            favorite = Favorite.objects.get(
-                customer=request.auth.user, store=store)
-            favorite.delete()
-
-        return Response(None, status=status.HTTP_204_NO_CONTENT)
