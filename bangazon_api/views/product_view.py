@@ -93,10 +93,10 @@ class ProductView(ViewSet):
                 schema=MessageSerializer()
             )
         })
-    def delete(self, request, pk):
+    def destroy(self, request, pk):
         """Delete a product"""
         try:
-            product = Product.objects.get(pk=pk, store__user=request.auth.user)
+            product = Product.objects.get(pk=pk, store__seller=request.auth.user)
             product.delete()
             return Response(None, status=status.HTTP_204_NO_CONTENT)
         except Product.DoesNotExist as ex:
