@@ -165,6 +165,7 @@ class ProductView(ViewSet):
         category = request.query_params.get('category', None)
         order = request.query_params.get('order_by', None)
         direction = request.query_params.get('direction', None)
+        name = request.query_params.get('name', None)
 
         if number_sold:
             products = products.annotate(
@@ -177,6 +178,9 @@ class ProductView(ViewSet):
 
         if category is not None:
             products = products.filter(category__id=category)
+
+        if name is not None:
+            products = products.filter(name__icontains=name)
 
         serializer = ProductSerializer(products, many=True)
         return Response(serializer.data)
@@ -328,12 +332,14 @@ class ProductView(ViewSet):
             rating = Rating.objects.get(
                 customer=request.auth.user, product=product)
             rating.score = request.data['score']
+            rating.review = request.data['review']
             rating.save()
         except Rating.DoesNotExist:
             rating = Rating.objects.create(
                 customer=request.auth.user,
                 product=product,
-                score=request.data['score']
+                score=request.data['score'],
+                review=request.data['review']
             )
 
         return Response({'message': 'Rating added'}, status=status.HTTP_201_CREATED)

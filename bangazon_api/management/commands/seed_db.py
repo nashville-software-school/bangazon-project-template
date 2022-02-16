@@ -119,5 +119,6 @@ class Command(BaseCommand):
             Rating.objects.create(
                 customer=user,
                 product=product,
-                score=random.randint(1, 5)
+                score=random.randint(1, 5),
+                review=self.faker.paragraph()
             )
