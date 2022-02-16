@@ -4,16 +4,16 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-django = "*"
+django = "~=3.2"
 autopep8 = "*"
 pylint = "*"
-djangorestframework = "*"
-django-cors-headers = "*"
+djangorestframework = "~=3.12"
+django-cors-headers = "~=3.10"
 pylint-django = "*"
-pillow = "*"
+pillow = "~=8.4"
 faker = "*"
 faker-commerce = "*"
-drf-yasg = "*"
+drf-yasg = "~=1.20"
 
 [dev-packages]
 
