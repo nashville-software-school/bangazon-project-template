@@ -27,14 +27,19 @@ class Product(models.Model):
             number -- The average rating for the product
         """
         # TODO: Fix Divide by zero error
-        # The below code returns a divide by zero error uncomment and fix
 
-        # total_rating = 0
-        # for rating in self.ratings.all():
-        #     total_rating += rating.rating
+        total_rating = 0
+        for rating in self.ratings.all():
+            total_rating += rating.score
 
-        # avg = total_rating / self.ratings.count()
-        # return avg
+        avg = total_rating / self.ratings.count()
+        return avg
+
+    @property
+    def number_purchased(self):
+        """Returns the number of times product shows up on completed orders
+        """
+        return self.orders.exclude(payment_type=None).count()
 
     def __str__(self):
         return self.name
