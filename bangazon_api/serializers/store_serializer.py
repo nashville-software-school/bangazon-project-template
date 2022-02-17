@@ -11,9 +11,11 @@ class StoreUserSerializer(serializers.ModelSerializer):
 
 class StoreSerializer(serializers.ModelSerializer):
     seller = StoreUserSerializer()
+
     class Meta:
         model = Store
-        fields = ('id', 'name', 'description', 'seller')
+        fields = ('id', 'name', 'description', 'seller', 'products')
+        depth = 1
 
 
 class AddStoreSerializer(serializers.Serializer):
