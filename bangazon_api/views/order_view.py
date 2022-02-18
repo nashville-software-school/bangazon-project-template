@@ -66,9 +66,7 @@ class OrderView(ViewSet):
             order.payment_type = payment_type
             order.completed_on = datetime.now()
             return Response({'message': "Order Completed"})
-        except Order.DoesNotExist as ex:
-            return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
-        except PaymentType.DoesNotExist as ex:
+        except (Order.DoesNotExist, PaymentType.DoesNotExist) as ex:
             return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
 
     @swagger_auto_schema(
