@@ -11,10 +11,11 @@ class StoreUserSerializer(serializers.ModelSerializer):
 
 class StoreSerializer(serializers.ModelSerializer):
     seller = StoreUserSerializer()
+    is_favorite = serializers.BooleanField(required=False)
 
     class Meta:
         model = Store
-        fields = ('id', 'name', 'description', 'seller', 'products')
+        fields = ('id', 'name', 'description', 'seller', 'products', 'is_favorite')
         depth = 1
 
 

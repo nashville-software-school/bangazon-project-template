@@ -2,6 +2,8 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.exceptions import ValidationError
+from django.db.models import Q, Count
+
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from bangazon_api.models import Store
@@ -64,7 +66,10 @@ class StoreView(ViewSet):
     def retrieve(self, request, pk):
         """Get a single store"""
         try:
-            store = Store.objects.get(pk=pk)
+            store = Store.objects.annotate(is_favorite=Count(
+                'favorites',
+                filter=Q(favorites=request.auth.user)
+            )).get(pk=pk)
             serializer = StoreSerializer(store)
             return Response(serializer.data)
         except Store.DoesNotExist as ex:

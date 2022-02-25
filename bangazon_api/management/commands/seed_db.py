@@ -36,7 +36,7 @@ class Command(BaseCommand):
             user = User.objects.create_user(
                 first_name=first_name,
                 last_name=last_name,
-                password="PassWord1",
+                password="password",
                 username=username,
             )
 
