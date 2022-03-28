@@ -1,7 +1,7 @@
 import random
+from datetime import datetime
 import faker_commerce
 from faker import Faker
-from datetime import datetime
 from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
 from rest_framework.authtoken.models import Token
@@ -90,6 +90,7 @@ class Command(BaseCommand):
             )
 
     def create_closed_orders(self, user):
+        """Create closed orders for the user"""
         order = Order.objects.create(
             user=user,
             payment_type=user.payment_types.first(),
@@ -101,6 +102,7 @@ class Command(BaseCommand):
         order.products.set(products)
 
     def create_open_orders(self, user):
+        """Create open orders for the user"""
         order = Order.objects.create(
             user=user
         )
@@ -110,6 +112,7 @@ class Command(BaseCommand):
         order.products.set(products)
 
     def create_favorite(self, user):
+        """Create Favorites for the user"""
         store = Store.objects.get(pk=random.randint(1, Store.objects.count()))
 
         Favorite.objects.create(
@@ -118,6 +121,7 @@ class Command(BaseCommand):
         )
 
     def create_ratings(self, user):
+        """Add ratings to products"""
         for product in Product.objects.all():
             Rating.objects.create(
                 customer=user,

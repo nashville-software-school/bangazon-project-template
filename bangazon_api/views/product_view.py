@@ -273,8 +273,8 @@ class ProductView(ViewSet):
         method='POST',
         request_body=AddRemoveRecommendationSerializer(),
         responses={
-            201: openapi.Response(
-                description="No content, the recommendation was added",
+            204: openapi.Response(
+                description="No content, the recommendation was added/deleted",
             ),
             404: openapi.Response(
                 description="Either the Product or User was not found",
@@ -288,27 +288,25 @@ class ProductView(ViewSet):
         try:
             product = Product.objects.get(pk=pk)
             customer = User.objects.get(username=request.data['username'])
-        except (Product.DoesNotExist, User.DoesNotExist) as ex:
-            return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
 
-        if request.method == "POST":
-            recommendation = Recommendation.objects.create(
-                product=product,
-                recommender=request.auth.user,
-                customer=customer
-            )
+            if request.method == "POST":
+                recommendation = Recommendation.objects.create(
+                    product=product,
+                    recommender=request.auth.user,
+                    customer=customer
+                )
 
-            return Response(None, status=status.HTTP_201_CREATED)
-
-        if request.method == 'DELETE':
-            recommendation = Recommendation.objects.get(
-                product=product,
-                recommender=request.auth.user,
-                customer=customer
-            )
-            recommendation.delete()
+            if request.method == 'DELETE':
+                recommendation = Recommendation.objects.get(
+                    product=product,
+                    recommender=request.auth.user,
+                    customer=customer
+                )
+                recommendation.delete()
 
             return Response(None, status=status.HTTP_204_NO_CONTENT)
+        except (Product.DoesNotExist, User.DoesNotExist) as ex:
+            return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
 
     @swagger_auto_schema(
         method='POST',

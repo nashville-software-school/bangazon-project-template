@@ -14,6 +14,11 @@ class Order(models.Model):
 
     @property
     def total(self):
+        """Calculate the order total
+
+        Returns:
+            float: The sum of the product prices on the order
+        """
         return sum([p.price for p in self.products.all()], 0)
 
     def __str__(self):
