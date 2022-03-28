@@ -96,7 +96,8 @@ class ProductView(ViewSet):
     def destroy(self, request, pk):
         """Delete a product"""
         try:
-            product = Product.objects.get(pk=pk, store__seller=request.auth.user)
+            product = Product.objects.get(
+                pk=pk, store__seller=request.auth.user)
             product.delete()
             return Response(None, status=status.HTTP_204_NO_CONTENT)
         except Product.DoesNotExist as ex:
@@ -252,9 +253,7 @@ class ProductView(ViewSet):
             order = Order.objects.get(
                 user=request.auth.user, completed_on=None)
             return Response(None, status=status.HTTP_204_NO_CONTENT)
-        except Product.DoesNotExist as ex:
-            return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
-        except Order.DoesNotExist as ex:
+        except (Product.DoesNotExist, Order.DoesNotExist) as ex:
             return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
 
     @swagger_auto_schema(
@@ -289,9 +288,7 @@ class ProductView(ViewSet):
         try:
             product = Product.objects.get(pk=pk)
             customer = User.objects.get(username=request.data['username'])
-        except Product.DoesNotExist as ex:
-            return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
-        except User.DoesNotExist as ex:
+        except (Product.DoesNotExist, User.DoesNotExist) as ex:
             return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
 
         if request.method == "POST":
