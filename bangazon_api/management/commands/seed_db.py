@@ -23,6 +23,9 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         if options['user_count']:
+            user_count = int(options['user_count'])
+            if user_count < 3:
+                raise ValueError("user_count must be greater than 3")
             self.create_users(int(options['user_count']))
         else:
             self.create_users()
