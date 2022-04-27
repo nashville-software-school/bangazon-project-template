@@ -1,13 +1,13 @@
 STATE_NAMES = [
-    "Alaska", "Alabama", "Arkansas", "Arizona", "California",
-    "Colorado", "Connecticut", "District ", "of Columbia",
-    "Delaware", "Florida", "Georgia", "Hawaii", "Iowa", "Idaho",
-    "Illinois", "Indiana", "Kansas", "Kentucky", "Louisiana",
-    "Massachusetts", "Maryland", "Maine", "Michigan", "Minnesota",
-    "Missouri", "Mississippi", "Montana", "North Carolina",
-    "North Dakota", "Nebraska", "New Hampshire", "New Jersey",
-    "New Mexico", "Nevada", "New York", "Ohio", "Oklahoma", "Oregon",
+    "Alabama", "Alaska", "Arizona", "Arkansas", "California",
+    "Colorado", "Connecticut", "Delaware", "District of Columbia",
+    "Florida", "Georgia", "Hawaii", "Idaho", "Illinois",
+    "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana",
+    "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota",
+    "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", 
+    "New Hampshire", "New Jersey", "New Mexico", "New York",
+    "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon",
     "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota",
-    "Tennessee", "Texas", "Utah", "Virginia", "Vermont", "Washington",
-    "Wisconsin", "West Virginia", "Wyoming"
+    "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington",
+    "West Virginia", "Wisconsin", "Wyoming"
 ]

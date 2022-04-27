@@ -14,9 +14,9 @@ from bangazon_api.models.product import Product
 class ProductTests(APITestCase):
     def setUp(self):
         """
-
+        Set up for ProductTests
         """
-        call_command('seed_db', user_count=2)
+        call_command('seed_db', user_count=3)
         self.user1 = User.objects.filter(store__isnull=False).first()
         self.token = Token.objects.get(user=self.user1)
 
