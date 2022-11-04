@@ -37,6 +37,6 @@ Once you're logged into the swagger docs, try out a few other requests so you ca
 
 
 ## Deployed client site
-1. The front end of the website is deployed here: https://nss-bangazon-dev.herokuapp.com
+1. The front end of the website is deployed here: https://bangazon-client.vercel.app
 2. It's built to work with your local api, once you have your local server running you can use the dev website to interact with the api
 3. To login: open the `auth_user` table and copy one of the usernames that you'd like to login as. The password for each user is `password`
