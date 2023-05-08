@@ -1,6 +1,6 @@
 # Bangazon Platform API
 
-Bangazon is an api for users to buy and sell products
+Bangazon is an api for users to buy and sell products. There will be issue tickets for bug fixes, tests, and reports you'll need to implement. While you're coding make sure to make a branch when you start a new ticket. Once you're done with the ticket push up the branch, make a pr, and merge it into main. Then start the process over for a new ticket.
 
 ## Local Setup
 
